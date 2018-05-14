@@ -15,9 +15,9 @@ This source code is released under All Rights Reserved.
 ]]
 
 local LibStub = _G.LibStub
-local MODNAME	= "AltTabber"
-AltTabber		= LibStub("AceAddon-3.0"):NewAddon(MODNAME, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
-local addon		= LibStub("AceAddon-3.0"):GetAddon(MODNAME)
+local MODNAME = "AltTabber"
+local AltTabber = LibStub("AceAddon-3.0"):NewAddon(MODNAME, "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0", "AceTimer-3.0")
+local addon	= LibStub("AceAddon-3.0"):GetAddon(MODNAME)
 local GetCVar = GetCVar
 local SetCVar = SetCVar
 local PlaySound = PlaySound
@@ -29,17 +29,18 @@ function addon:OnInitialize()
 end
 
 function addon:Scream()
-	local oldVolume = GetCVar("Sound_MasterVolume") or 0.02
-	if IsInInstance() ~= nil then
+	local oldVolume = GetCVar("Sound_MasterVolume") or 0.05
+	if not IsInInstance() then
 		SetCVar("Sound_MasterVolume", 0.03)
 	else
-		SetCVar("Sound_MasterVolume", 0.04)
+		SetCVar("Sound_MasterVolume", 0.05)
 	end
 	self:ScheduleTimer("Whisper", 4)
 	FlashClientIcon()
 end
+
 function addon:Whisper()
-	SetCVar("Sound_MasterVolume", 0.02)
+	SetCVar("Sound_MasterVolume", 0.03)
 	addon:Print(GetCVar("Sound_MasterVolume"))
 end
 
@@ -69,11 +70,11 @@ local function CheckCVars(sound_on)
 		-- Set the variables and inform the user
 		elseif (Sound_EnableAllSound == "0") then
 			addon:Print("Sound was off, will be enabled now.")
-			SetCVar("Sound_EnableAllSound","1")
+			SetCVar("Sound_EnableAllSound", "1")
 			-- Disable all the other types of sounds
-			SetCVar("Sound_EnableSFX","0")
-			SetCVar("Sound_EnableAmbience","0")
-			SetCVar("Sound_EnableMusic","0")
+			SetCVar("Sound_EnableSFX", "0")
+			SetCVar("Sound_EnableAmbience", "0")
+			SetCVar("Sound_EnableMusic", "0")
 			return false
 			-- We just have sound off, but conditions are correct so we will
 			-- hear the sounds.
@@ -95,7 +96,7 @@ end
 local function PlayPVPSound(sound_on)
 	if CheckCVars(sound_on) then
 		addon:Scream()
-		PlaySound(PlaySoundKitID and "PVPEnterQueue" or 8458, "Master")
+		PlaySound(8458, "Master")
 	end
 end
 
@@ -103,7 +104,7 @@ end
 local function PlayReadyCheck(sound_on)
 	if CheckCVars(sound_on) then
 		addon:Scream()
-		PlaySound(PlaySoundKitID and "ReadyCheck" or 8960, "Master")
+		PlaySound(8960, "Master")
 	end
 end
 
@@ -145,7 +146,7 @@ function addon:BATTLEFIELD_MGR_ENTRY_INVITE()
 	PlayPVPSound()
 end
 
-function BrawlersGuildEvents(currentZone)
+local function BrawlersGuildEvents(currentZone)
 	-- We're in the Brawler's Guild
 	if currentZone == 922 or currentZone == 925 then
 		BrawlerLocationEnabled = true
