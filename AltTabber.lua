@@ -112,7 +112,7 @@ function addon:OnEnable()
 
 	self:RegisterEvent("READY_CHECK") -- Raid Ready Checks
 	self:RegisterEvent("LFG_PROPOSAL_SHOW") -- LFG System
-	self:RegisterEvent("BATTLEFIELD_MGR_ENTRY_INVITE") -- World PVP (Tol Barad, WG)
+	-- self:RegisterEvent("BATTLEFIELD_MGR_ENTRY_INVITE") -- World PVP (Tol Barad, WG)
 	self:RegisterEvent("PET_BATTLE_QUEUE_STATUS") -- PVP Pet Battles
 
 	-- Check zones for the Brawler's Guild.
@@ -158,22 +158,22 @@ local function BrawlersGuildEvents(currentZone)
 end
 
 function addon:ZONE_CHANGED()
-	local currentZone = GetCurrentMapAreaID()
+	local currentZone = C_Map.GetBestMapForUnit("player")
 	BrawlersGuildEvents(currentZone)
 end
 
 function addon:ZONE_CHANGED_INDOORS()
-	local currentZone = GetCurrentMapAreaID()
+	local currentZone = C_Map.GetBestMapForUnit("player")
 	BrawlersGuildEvents(currentZone)
 end
 
 function addon:ZONE_CHANGED_NEW_AREA()
-	local currentZone = GetCurrentMapAreaID()
+	local currentZone = C_Map.GetBestMapForUnit("player")
 	BrawlersGuildEvents(currentZone)
 end
 
 function addon:PLAYER_ENTERING_WORLD()
-	local currentZone = GetCurrentMapAreaID()
+	local currentZone = C_Map.GetBestMapForUnit("player")
 	BrawlersGuildEvents(currentZone)
 end
 
